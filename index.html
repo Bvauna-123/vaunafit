@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -8,32 +6,34 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="VaunaFit">
-    <title>VaunaFit App</title>
+    <title>VaunaFit Pro</title>
     
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='100' fill='%230f0f0f'/%3E%3Cpath d='M144 144h224v48H144zM144 320h224v48H144z' fill='%233b82f6' opacity='0.3'/%3E%3Cpath d='M176 112h160v288H176z' fill='%233b82f6'/%3E%3Cpath d='M128 160h256v192H128z' fill='none' stroke='%233b82f6' stroke-width='20' rx='20'/%3E%3Cpath fill='%23ffffff' d='M256 192l-48 48h96zM256 320l48-48h-96z'/%3E%3C/svg%3E">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='100' fill='%230f0f0f'/%3E%3Crect x='176' y='112' width='160' height='288' rx='20' fill='%233b82f6'/%3E%3Cpath d='M128 160h256v192H128z' fill='none' stroke='%233b82f6' stroke-width='24' rx='20'/%3E%3Cpath fill='%23ffffff' d='M256 200l-40 40h80zM256 312l40-40h-80z'/%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="https://ui-avatars.com/api/?name=Vauna+Fit&background=000000&color=3b82f6&size=512&font-size=0.35&length=2&bold=true&rounded=true">
+    
+    <link rel="icon" type="image/png" href="https://ui-avatars.com/api/?name=Vauna+Fit&background=000000&color=3b82f6&size=128&font-size=0.35&length=2&bold=true&rounded=true">
 
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
     <style>
+        /* ... MANTENHA O SEU CSS AQUI IGUAL AO ANTERIOR ... */
         :root {
             --bg: #000000;
-            --surface: #0f0f0f;
-            --surface-card: #18181b;
-            --border: #27272a;
+            --surface: #0a0a0a;
+            --surface-card: #141414;
+            --border: #262626;
             --primary: #3b82f6;
-            --primary-dim: rgba(59, 130, 246, 0.15);
-            --gold: #fbbf24;
+            --primary-dim: rgba(59, 130, 246, 0.1);
+            --gold: #d4af37;
             --text-main: #ffffff;
-            --text-muted: #a1a1aa;
+            --text-muted: #888888;
             --success: #10b981;
             --danger: #ef4444;
-            --nav-height: 70px;
+            --nav-height: 80px;
             --header-height: 60px;
-            --radius: 18px;
+            --radius: 16px;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
         
         body { 
             background-color: var(--bg); color: var(--text-main);
@@ -41,479 +41,147 @@
             display: flex; flex-direction: column;
         }
 
-        /* HEADER */
+        /* HEADER FIXED */
         .app-header {
-            flex: 0 0 var(--header-height);
+            flex: 0 0 60px;
             display: flex; align-items: center; justify-content: space-between;
             padding: 0 20px; border-bottom: 1px solid var(--border);
-            background: rgba(0,0,0,0.95); backdrop-filter: blur(10px);
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(20px);
             padding-top: env(safe-area-inset-top); z-index: 50;
         }
-        .logo { font-weight: 800; font-size: 1.2rem; letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px; }
-        .logo i { color: var(--primary); font-size: 1.4rem; }
+        .logo { font-weight: 800; font-size: 1.2rem; letter-spacing: -0.5px; }
+        .logo span { color: var(--primary); }
+        .header-pill { font-size: 0.7rem; color: var(--gold); border: 1px solid rgba(212, 175, 55, 0.3); padding: 4px 10px; border-radius: 20px; }
+
+        /* Progress Bar Top */
         .progress-line { position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background: #222; }
         .progress-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.4s ease; box-shadow: 0 0 10px var(--primary); }
 
-        /* CONTAINER */
+        /* MAIN CONTAINER */
         .view-container {
             flex: 1; overflow-y: auto; scroll-behavior: smooth;
-            padding: 20px; padding-bottom: calc(var(--nav-height) + 40px);
+            padding: 20px; padding-bottom: calc(var(--nav-height) + 20px);
         }
+        
         .view-section { display: none; animation: fadeUp 0.3s ease; }
         .view-section.active { display: block; }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* DASHBOARD */
-        .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 30px 0; }
-        .dash-card {
-            background: var(--surface-card); border: 1px solid var(--border);
-            border-radius: 20px; padding: 20px; text-align: center;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        .dash-hero {
+            display: flex; flex-direction: column; align-items: center; text-align: center; padding: 40px 0;
         }
-        .dash-card.hero { grid-column: span 2; padding: 30px; background: linear-gradient(145deg, #1f1f22, #0d0d0d); }
-        .stat-val { font-size: 2.5rem; font-weight: 800; color: #fff; line-height: 1; }
-        .stat-lbl { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; }
-        .stat-icon { font-size: 1.5rem; color: var(--primary); margin-bottom: 10px; }
-        .btn-start {
-            width: 100%; padding: 16px; border-radius: 14px; margin-top: 10px;
+        .stat-ring {
+            width: 160px; height: 160px; border-radius: 50%;
+            background: radial-gradient(circle at top, #1a1a1a, #000);
+            border: 1px solid var(--border); margin-bottom: 20px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        }
+        .stat-num { font-size: 3.5rem; font-weight: 700; color: #fff; line-height: 1; }
+        .stat-lbl { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-top: 5px; }
+        
+        .btn-start-big {
+            width: 100%; max-width: 300px; padding: 18px; border-radius: 14px;
             background: var(--primary); color: #fff; font-size: 1rem; font-weight: 700;
             border: none; box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3); cursor: pointer;
             display: flex; align-items: center; justify-content: center; gap: 8px;
         }
 
-        /* CARD EXERCICIO */
+        /* WORKOUT UI */
+        .split-nav { display: flex; gap: 10px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
+        .split-btn {
+            padding: 10px 20px; background: var(--surface-card); border: 1px solid var(--border);
+            color: var(--text-muted); border-radius: 12px; font-weight: 600; white-space: nowrap; cursor: pointer; transition: 0.2s;
+        }
+        .split-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+        .section-header h2 { font-size: 1.8rem; font-weight: 800; color: #fff; }
+        .section-header p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; margin-top: 4px; }
+
+        /* EXERCISE CARD */
         .card {
             background: var(--surface-card); border: 1px solid var(--border);
             border-radius: var(--radius); padding: 16px; margin-bottom: 16px;
-            display: flex; flex-direction: column; gap: 16px;
+            display: flex; flex-direction: column; gap: 16px; position: relative;
         }
-        .card.done { border-color: rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.05); }
+        .card.done { border-color: rgba(34, 197, 94, 0.3); background: rgba(34, 197, 94, 0.05); }
+
         .card-top { display: flex; justify-content: space-between; align-items: flex-start; }
+        .ex-info { flex: 1; }
         .ex-name { font-size: 1.1rem; font-weight: 700; color: #fff; line-height: 1.3; margin-bottom: 6px; }
+        
+        .meta-row { display: flex; gap: 8px; align-items: center; }
         .badge-sets {
-            font-size: 0.7rem; font-weight: 700; color: var(--gold);
-            border: 1px solid rgba(251, 191, 36, 0.3); background: rgba(251, 191, 36, 0.05);
-            padding: 3px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px;
+            font-size: 0.75rem; font-weight: 600; color: var(--gold);
+            border: 1px solid rgba(212, 175, 55, 0.4); background: rgba(212, 175, 55, 0.05);
+            padding: 3px 10px; border-radius: 6px;
         }
+        
         .swap-btn {
-            font-size: 0.75rem; color: var(--text-muted); background: rgba(255,255,255,0.05);
-            padding: 6px 12px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 6px;
+            font-size: 0.7rem; color: var(--text-muted); background: rgba(255,255,255,0.05);
+            padding: 5px 10px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 4px;
             border: 1px solid transparent; transition: 0.2s;
         }
         .swap-btn.active { color: var(--danger); background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3); }
 
-        /* CONTROLES */
-        .action-row { display: flex; gap: 10px; height: 52px; }
+        /* INPUT ROW */
+        .action-row { display: flex; gap: 10px; height: 50px; }
+
         .input-box {
             width: 100px; background: #000; border: 1px solid var(--border); border-radius: 12px;
             display: flex; align-items: center; justify-content: center; position: relative;
         }
         .input-box input {
             width: 100%; height: 100%; background: transparent; border: none; color: #fff;
-            font-size: 1.3rem; font-weight: 700; text-align: center; outline: none; padding-right: 20px;
+            font-size: 1.3rem; font-weight: 700; text-align: center; outline: none;
+            padding-right: 15px; 
             -moz-appearance: textfield;
         }
+        .input-box input::-webkit-outer-spin-button,
+        .input-box input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        
         .input-box label { position: absolute; right: 10px; font-size: 0.7rem; color: #444; font-weight: 700; pointer-events: none; }
+
         .btn-act {
             flex: 1; border-radius: 12px; border: 1px solid var(--border); background: rgba(255,255,255,0.03);
-            display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; color: var(--text-muted);
-            transition: 0.2s; font-weight: 600;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-muted);
+            transition: 0.2s;
         }
-        .btn-act i { font-size: 1.3rem; }
         .btn-act.timer.running { border-color: var(--primary); background: var(--primary-dim); color: var(--primary); }
         .btn-act.check { flex: 0 0 54px; }
         .btn-act.check.checked { background: var(--success); border-color: var(--success); color: #000; }
 
-        /* NAV E OUTROS */
-        .split-nav { display: flex; gap: 8px; margin-bottom: 20px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
-        .split-btn {
-            padding: 10px 16px; background: var(--surface-card); border: 1px solid var(--border);
-            color: var(--text-muted); border-radius: 12px; font-weight: 600; white-space: nowrap; 
-            cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 6px;
+        /* Guide */
+        .guide-toggle { font-size: 0.8rem; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; gap: 6px; }
+        .guide-content {
+            max-height: 0; overflow: hidden; transition: max-height 0.3s ease;
+            background: #000; margin-top: 0; border-radius: 8px; border-left: 2px solid var(--gold);
         }
-        .split-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
-        
-        .guide-toggle { font-size: 0.85rem; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 5px 0; }
-        .guide-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; background: #000; margin-top: 0; border-radius: 10px; }
-        .guide-content.open { max-height: 800px; margin-top: 12px; padding: 16px; border: 1px solid var(--border); }
-        .guide-block { margin-bottom: 12px; }
-        .guide-label { color: var(--gold); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; font-weight: 700; }
-        .guide-text { font-size: 0.9rem; color: #d4d4d8; line-height: 1.5; }
+        .guide-content.open { max-height: 300px; margin-top: 12px; padding: 12px; border: 1px solid var(--border); border-left: 2px solid var(--gold); }
+        .guide-text { font-size: 0.85rem; color: #ccc; line-height: 1.5; }
+        .guide-text strong { color: var(--gold); }
 
+        /* NAV BAR */
         .bottom-nav {
-            position: fixed; bottom: 0; left: 0; width: 100%; height: calc(var(--nav-height) + env(safe-area-inset-bottom));
+            position: fixed; bottom: 0; left: 0; width: 100%; height: var(--nav-height);
             background: rgba(10,10,10,0.95); backdrop-filter: blur(20px); border-top: 1px solid var(--border);
             display: grid; grid-template-columns: repeat(3, 1fr); padding-bottom: env(safe-area-inset-bottom); z-index: 100;
         }
-        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #555; cursor: pointer; transition: 0.2s; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; color: #444; cursor: pointer; transition: 0.2s; }
         .nav-item.active { color: var(--primary); }
-        .nav-item i { font-size: 1.5rem; margin-bottom: 4px; }
+        .nav-icon { margin-bottom: 4px; }
         .nav-label { font-size: 0.7rem; font-weight: 600; }
 
+        /* FAB */
         .fab {
-            position: fixed; bottom: calc(var(--nav-height) + 20px); right: 20px; 
-            background: #fff; color: #000; padding: 14px 24px; border-radius: 50px; 
-            font-weight: 800; border: none; box-shadow: 0 5px 20px rgba(255,255,255,0.2); 
-            transform: translateY(150px); opacity: 0; transition: 0.4s; z-index: 90;
-            display: flex; align-items: center; gap: 8px;
+            position: fixed; bottom: 90px; right: 20px; background: #fff; color: #000;
+            padding: 14px 24px; border-radius: 50px; font-weight: 800; border: none;
+            box-shadow: 0 5px 20px rgba(255,255,255,0.2); transform: translateY(100px); opacity: 0; transition: 0.4s; z-index: 90;
         }
         .fab.visible { transform: translateY(0); opacity: 1; }
+
+        /* Icons */
+        .icon { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
     </style>
 </head>
-<body>
-
-    <header class="app-header">
-        <div class="logo"><i class="ph-fill ph-barbell"></i> VAUNAFIT</div>
-        <div class="progress-line"><div class="progress-fill" id="progress-bar"></div></div>
-    </header>
-
-    <main class="view-container">
-        
-        <section id="view-dashboard" class="view-section active">
-            <h2 style="font-size:1.8rem; margin-bottom: 5px;">Olá, Bruno</h2>
-            <p style="color:#888; margin-bottom: 30px;">Vamos esmagar hoje?</p>
-
-            <div class="dash-grid">
-                <div class="dash-card hero">
-                    <div class="stat-lbl">Próximo Treino</div>
-                    <div class="stat-val" style="color:var(--primary); font-size:2rem; margin:10px 0;" id="next-split-card">Treino A</div>
-                    <button class="btn-start" onclick="goToWorkout()">
-                        <i class="ph-bold ph-play"></i> COMEÇAR
-                    </button>
-                </div>
-                <div class="dash-card">
-                    <div class="stat-icon"><i class="ph-fill ph-chart-bar"></i></div>
-                    <div class="stat-val" id="dash-total">0</div>
-                    <div class="stat-lbl">Treinos</div>
-                </div>
-                <div class="dash-card">
-                    <div class="stat-icon"><i class="ph-fill ph-fire"></i></div>
-                    <div class="stat-val" id="dash-streak">0</div>
-                    <div class="stat-lbl">Frequência</div>
-                </div>
-            </div>
-            
-            <h3 style="font-size:1rem; color:#666; margin-bottom:15px; margin-top:30px;">Histórico Recente</h3>
-            <div id="dash-history"></div>
-        </section>
-
-        <section id="view-workout" class="view-section">
-            <div class="split-nav">
-                <div class="split-btn active" onclick="loadSplit('A')" id="tab-A"><i class="ph-bold ph-person-arms-spread"></i> Peito</div>
-                <div class="split-btn" onclick="loadSplit('B')" id="tab-B"><i class="ph-bold ph-person-simple-hike"></i> Costas</div>
-                <div class="split-btn" onclick="loadSplit('C')" id="tab-C"><i class="ph-bold ph-person-simple-run"></i> Perna</div>
-                <div class="split-btn" onclick="loadSplit('D')" id="tab-D"><i class="ph-bold ph-barbell"></i> Ombro</div>
-            </div>
-
-            <h2 id="split-title" style="font-size:1.6rem; font-weight:800; margin-bottom:5px;">...</h2>
-            <p id="split-sub" style="color:var(--gold); font-size:0.9rem; margin-bottom:20px;">...</p>
-
-            <div id="cards-container"></div>
-        </section>
-
-        <section id="view-profile" class="view-section">
-            <h2 style="font-size:1.5rem; margin-bottom:20px;">Histórico Completo</h2>
-            <div id="full-history-list"></div>
-            <div style="margin-top:40px; text-align:center;">
-                <button onclick="resetApp()" style="background:transparent; border:1px solid #333; color:#666; padding:10px 20px; border-radius:10px;">
-                    <i class="ph ph-trash"></i> Resetar Dados
-                </button>
-            </div>
-        </section>
-
-    </main>
-
-    <button class="fab" id="finish-btn" onclick="finishSession()">
-        <i class="ph-bold ph-flag-checkered"></i> FINALIZAR
-    </button>
-
-    <nav class="bottom-nav">
-        <div class="nav-item active" onclick="switchView('dashboard', this)">
-            <i class="ph ph-house"></i>
-            <span class="nav-label">Início</span>
-        </div>
-        <div class="nav-item" onclick="switchView('workout', this)">
-            <i class="ph ph-barbell"></i>
-            <span class="nav-label">Treino</span>
-        </div>
-        <div class="nav-item" onclick="switchView('profile', this)">
-            <i class="ph ph-clock-counter-clockwise"></i>
-            <span class="nav-label">Histórico</span>
-        </div>
-    </nav>
-
-    <script>
-        const db = {
-            "A": {
-                name: "Peito & Tríceps",
-                sub: "Estratégia: Fugir do Supino e Polia lotados.",
-                ex: [
-                    { 
-                        id:"a1", name:"Supino Inclinado Halter", sets:"4x 8-10", rest:120, alt:"Flexão Pés Elevados",
-                        guide: "<div class='guide-block'><div class='guide-label'>O Aparelho</div><div class='guide-text'>Banco Inclinado (30º a 45º) e dois Halteres.</div></div><div class='guide-block'><div class='guide-label'>Posição</div><div class='guide-text'>Sente-se com os halteres nos joelhos. Deite e chute os pesos para cima.</div></div><div class='guide-block'><div class='guide-label'>Execução</div><div class='guide-text'>Desça os cotovelos num ângulo de 45º (seta), não abertos em T. Toque levemente o ombro e suba explosivo.</div></div>",
-                        guideSub: "<div class='guide-block'><div class='guide-label'>O Aparelho</div><div class='guide-text'>Um banco, caixa ou sofá para apoiar os pés.</div></div><div class='guide-block'><div class='guide-label'>Execução</div><div class='guide-text'>Desça até o nariz quase tocar o chão. Suba empurrando o chão.</div></div>"
-                    },
-                    { 
-                        id:"a2", name:"Supino Reto (Barra)", sets:"3x 10-12", rest:90, alt:"Floor Press",
-                        guide: "<div class='guide-block'><div class='guide-label'>Posição</div><div class='guide-text'>Olhos debaixo da barra. Retraia as escápulas (junte as costas no banco).</div></div><div class='guide-block'><div class='guide-label'>Execução</div><div class='guide-text'>Desça a barra na linha dos mamilos. Cotovelos levemente fechados.</div></div>",
-                        guideSub: "<div class='guide-block'><div class='guide-label'>O Aparelho</div><div class='guide-text'>Colchonete e dois Halteres.</div></div><div class='guide-block'><div class='guide-label'>Execução</div><div class='guide-text'>Deite no chão. Desça até o tríceps tocar o solo, pause 1s e suba.</div></div>"
-                    },
-                    { 
-                        id:"a3", name:"Crossover", sets:"4x 15", rest:60, alt:"Crucifixo Halter",
-                        guide: "<div class='guide-block'><div class='guide-label'>Execução</div><div class='guide-text'>Dê um passo à frente. Incline o tronco. Traga as mãos ao centro, na frente do umbigo.</div></div>",
-                        guideSub: "<div class='guide-block'><div class='guide-label'>O Aparelho</div><div class='guide-text'>Banco Reto e Halteres leves.</div></div><div class='guide-block'><div class='guide-label'>Execução</div><div class='guide-text'>Deite-se. Abra os braços como um 'abraço' até sentir o peito alongar bem.</div></div>"
-                    },
-                    { 
-                        id:"a4", name:"Tríceps Corda", sets:"4x 12", rest:60, alt:"Francês Bilateral",
-                        guide: "<div class='guide-block'><div class='guide-label'>O Segredo</div><div class='guide-text'>Cole os cotovelos nas costelas. Eles são uma dobradiça e NÃO podem sair do lugar.</div></div>",
-                        guideSub: "<div class='guide-block'><div class='guide-label'>O Aparelho</div><div class='guide-text'>Um Halter pesado. Em pé ou sentado.</div></div><div class='guide-block'><div class='guide-label'>Execução</div><div class='guide-text'>Segure o halter com as duas mãos atrás da cabeça. Estenda tudo.</div></div>"
-                    },
-                    { 
-                        id:"a5", name:"Tríceps Testa", sets:"3x 12", rest:60, alt:"Flexão Diamante",
-                        guide: "<div class='guide-block'><div class='guide-label'>Posição</div><div class='guide-text'>Deitado no banco, braços esticados para cima.</div></div><div class='guide-block'><div class='guide-label'>Execução</div><div class='guide-text'>Dobre o cotovelo levando a barra na testa ou atrás da cabeça.</div></div>",
-                        guideSub: "<div class='guide-block'><div class='guide-label'>Execução</div><div class='guide-text'>Posição de flexão, mas junte os indicadores e polegares formando um triângulo/diamante.</div></div>"
-                    },
-                    { 
-                        id:"a6", name:"Abdômen Polia", sets:"4x 20", rest:45, alt:"Abs Remador",
-                        guide: "<div class='guide-block'><div class='guide-label'>Execução</div><div class='guide-text'>Enrole a coluna como um tatu-bola. Tente levar a testa nos joelhos.</div></div>",
-                        guideSub: "<div class='guide-block'><div class='guide-label'>Execução</div><div class='guide-text'>Deitado no chão, corpo esticado. Suba o tronco e dobre os joelhos ao mesmo tempo.</div></div>"
-                    }
-                ]
-            },
-            "B": {
-                name: "Costas & Bíceps",
-                sub: "Estratégia: Trocar cabos por pesos livres.",
-                ex: [
-                    { id:"b1", name:"Puxada Alta", sets:"4x 12", rest:90, alt:"Barra Fixa / Pullover", guide:"Puxe levando o cotovelo na cintura.", guideSub:"Faça barra fixa ou Pullover com halter." },
-                    { id:"b2", name:"Remada Curvada", sets:"4x 10", rest:120, alt:"Remada Serrote", guide:"Tronco inclinado, coluna reta. Puxe no umbigo.", guideSub:"Apoie mão e joelho no banco. Puxe o halter." },
-                    { id:"b3", name:"Remada Baixa", sets:"3x 12", rest:90, alt:"Remada Halter", guide:"Alongue na ida, esmague as costas na volta.", guideSub:"Incline o tronco 45º. Puxe dois halteres." },
-                    { id:"b4", name:"Rosca Direta", sets:"4x 10", rest:60, alt:"Rosca Halter", guide:"Cotovelos fixos ao lado da costela.", guideSub:"Faça alternado com halteres. Gire o punho." },
-                    { id:"b5", name:"Rosca Martelo", sets:"3x 12", rest:60, alt:"Martelo Anilha", guide:"Pegada neutra (polegares para cima).", guideSub:"Segure uma anilha de 10kg como um volante." },
-                    { id:"b6", name:"Hiperextensão", sets:"3x 15", rest:60, alt:"Stiff Unilateral", guide:"Desça tudo. Suba até alinhar o corpo.", guideSub:"Fique num pé só. Desça o tronco enquanto a outra perna sobe." }
-                ]
-            },
-            "C": {
-                name: "Pernas Completo",
-                sub: "Estratégia: Fugir da fila do Leg Press.",
-                ex: [
-                    { id:"c1", name:"Agachamento Livre", sets:"4x 10", rest:180, alt:"Agachamento Goblet", guide:"Pés largura ombro. Jogue o quadril para trás.", guideSub:"Segure um halter colado no peito." },
-                    { id:"c2", name:"Leg Press 45", sets:"4x 12", rest:120, alt:"Afundo/Passada", guide:"Empurre com o calcanhar. Não trave o joelho.", guideSub:"Dê passos largos pela academia com halteres." },
-                    { id:"c3", name:"Cad. Extensora", sets:"3x 15", rest:60, alt:"Step Up (Banco)", guide:"Segure 1s perna esticada no topo.", guideSub:"Suba no banco usando apenas a força da perna." },
-                    { id:"c4", name:"Mesa Flexora", sets:"4x 12", rest:90, alt:"Stiff Halter", guide:"Não levante o quadril do banco.", guideSub:"Pernas semi-esticadas. Desça o tronco reto." },
-                    { id:"c5", name:"Panturrilha Leg", sets:"5x 15", rest:45, alt:"Panturrilha Pé", guide:"Desça o calcanhar até sentir alongar muito.", guideSub:"Faça em um degrau, um pé de cada vez." }
-                ]
-            },
-            "D": {
-                name: "Ombros & Trapézio",
-                sub: "Estratégia: Foco em Halteres.",
-                ex: [
-                    { id:"d1", name:"Desenv. Máquina", sets:"4x 10", rest:90, alt:"Desenv. Halter", guide:"Empurre para cima sem bater os pesos.", guideSub:"Sentado ou em pé com halteres." },
-                    { id:"d2", name:"Elev. Lateral", sets:"5x 15", rest:60, alt:"Lateral Anilha", guide:"Cotovelo sempre mais alto que o punho.", guideSub:"Use anilhas encaixando os dedos no furo." },
-                    { id:"d3", name:"Elev. Frontal", sets:"3x 12", rest:60, alt:"Frontal Volante", guide:"Suba apenas até a linha dos olhos.", guideSub:"Segure uma anilha grande com as duas mãos." },
-                    { id:"d4", name:"Crucifixo Inv.", sets:"3x 15", rest:60, alt:"Crucifixo Inv. Halter", guide:"Foco na parte de trás do ombro.", guideSub:"Incline o tronco. Abra os braços para os lados." },
-                    { id:"d5", name:"Encolhimento", sets:"4x 15", rest:60, alt:"Encolhimento Halter", guide:"Braços mortos. Puxe ombro na orelha.", guideSub:"Use os halteres mais pesados que conseguir." },
-                    { id:"d6", name:"Abs Infra", sets:"4x Falha", rest:45, alt:"Infra Solo", guide:"O objetivo é tirar o quadril do banco.", guideSub:"Deitado no chão, suba as pernas." }
-                ]
-            }
-        };
-
-        let currentSplit = localStorage.getItem('vf_split') || 'A';
-        let timerIntervals = {};
-
-        function init() {
-            renderDashboard();
-            loadSplit(currentSplit);
-        }
-
-        function switchView(viewName, el) {
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            if(el) el.classList.add('active');
-            
-            document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
-            document.getElementById(`view-${viewName}`).classList.add('active');
-            
-            if(viewName === 'dashboard') renderDashboard();
-            if(viewName === 'profile') renderHistory();
-        }
-
-        function goToWorkout() {
-            switchView('workout', document.querySelectorAll('.nav-item')[1]);
-        }
-
-        function renderDashboard() {
-            const h = JSON.parse(localStorage.getItem('vf_hist') || '[]');
-            document.getElementById('dash-total').innerText = h.length;
-            document.getElementById('dash-streak').innerText = h.length > 0 ? "Ativo" : "0";
-            
-            const list = document.getElementById('dash-history');
-            if(h.length === 0) list.innerHTML = '<div style="text-align:center; color:#444; padding:20px;">Nenhum treino.</div>';
-            else {
-                list.innerHTML = h.slice(0,3).map(i => `
-                    <div style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid #222;">
-                        <div>
-                            <div style="font-weight:700; color:#fff;">${i.name}</div>
-                            <div style="font-size:0.75rem; color:#666;">${new Date(i.date).toLocaleDateString('pt-BR')}</div>
-                        </div>
-                        <div style="background:#222; padding:4px 8px; border-radius:4px; font-size:0.7rem; color:#888; height:fit-content;">${i.split}</div>
-                    </div>
-                `).join('');
-            }
-        }
-
-        function loadSplit(split) {
-            currentSplit = split;
-            localStorage.setItem('vf_split', split);
-            
-            document.querySelectorAll('.split-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(`tab-${split}`).classList.add('active');
-            
-            const data = db[split];
-            document.getElementById('split-title').innerText = data.name;
-            document.getElementById('split-sub').innerText = data.sub;
-
-            const container = document.getElementById('cards-container');
-            container.innerHTML = data.ex.map(ex => {
-                const isDone = localStorage.getItem(`done_${ex.id}`) === 'true';
-                const isSwapped = localStorage.getItem(`swap_${ex.id}`) === 'true';
-                const weight = localStorage.getItem(`w_${ex.id}`) || '';
-                
-                const name = isSwapped ? ex.alt : ex.name;
-                const guide = isSwapped ? ex.guideSub : ex.guide;
-
-                return `
-                <div class="card ${isDone ? 'done' : ''}" id="card-${ex.id}">
-                    <div class="card-top">
-                        <div class="ex-info">
-                            <div class="ex-name">${name}</div>
-                            <div class="badge-sets"><i class="ph-bold ph-barbell"></i> ${ex.sets}</div>
-                        </div>
-                        <div class="swap-btn ${isSwapped ? 'active' : ''}" onclick="toggleSwap('${ex.id}')">
-                            <i class="ph-bold ph-arrows-left-right"></i> ${isSwapped ? 'Voltar' : 'Trocar'}
-                        </div>
-                    </div>
-
-                    <div class="action-row">
-                        <div class="input-box">
-                            <input type="number" inputmode="decimal" value="${weight}" onchange="saveWeight('${ex.id}', this.value)" placeholder="0">
-                            <label>kg</label>
-                        </div>
-                        
-                        <div class="btn-act timer" id="timer-${ex.id}" onclick="toggleTimer('${ex.id}', ${ex.rest})">
-                            <i class="ph-bold ph-clock"></i>
-                        </div>
-
-                        <div class="btn-act check ${isDone ? 'checked' : ''}" onclick="toggleCheck('${ex.id}')">
-                            <i class="ph-bold ph-check"></i>
-                        </div>
-                    </div>
-
-                    <div class="guide-toggle" onclick="toggleGuide('${ex.id}')">
-                        <i class="ph-bold ph-info"></i> Ver Guia Técnico
-                    </div>
-                    <div class="guide-content" id="guide-${ex.id}">
-                        ${guide}
-                    </div>
-                </div>`;
-            }).join('');
-            updateProgress();
-        }
-
-        function toggleCheck(id) {
-            const key = `done_${id}`;
-            const state = !(localStorage.getItem(key) === 'true');
-            localStorage.setItem(key, state);
-            const card = document.getElementById(`card-${id}`);
-            const btn = card.querySelector('.btn-act.check');
-            
-            if(state) { card.classList.add('done'); btn.classList.add('checked'); if(navigator.vibrate) navigator.vibrate(50); }
-            else { card.classList.remove('done'); btn.classList.remove('checked'); }
-            updateProgress();
-        }
-
-        function toggleSwap(id) {
-            const key = `swap_${id}`;
-            localStorage.setItem(key, !(localStorage.getItem(key) === 'true'));
-            loadSplit(currentSplit);
-        }
-
-        function toggleGuide(id) { document.getElementById(`guide-${id}`).classList.toggle('open'); }
-        function saveWeight(id, val) { localStorage.setItem(`w_${id}`, val); }
-
-        function toggleTimer(id, seconds) {
-            const btn = document.getElementById(`timer-${id}`);
-            
-            if(timerIntervals[id]) {
-                clearInterval(timerIntervals[id]);
-                delete timerIntervals[id];
-                btn.classList.remove('running');
-                btn.innerHTML = `<i class="ph-bold ph-clock"></i>`;
-                return;
-            }
-
-            Object.keys(timerIntervals).forEach(k => {
-                clearInterval(timerIntervals[k]);
-                delete timerIntervals[k];
-                const otherBtn = document.getElementById(`timer-${k}`);
-                if(otherBtn) { otherBtn.classList.remove('running'); otherBtn.innerHTML = `<i class="ph-bold ph-clock"></i>`; }
-            });
-
-            let left = seconds;
-            btn.classList.add('running');
-            btn.innerHTML = `<span style="font-weight:700">${left}</span>`;
-
-            timerIntervals[id] = setInterval(() => {
-                left--;
-                btn.innerHTML = `<span style="font-weight:700">${left}</span>`;
-                if(left <= 0) {
-                    clearInterval(timerIntervals[id]);
-                    delete timerIntervals[id];
-                    btn.classList.remove('running');
-                    btn.innerHTML = `<i class="ph-bold ph-check"></i>`;
-                    if(navigator.vibrate) navigator.vibrate([200, 200]);
-                    setTimeout(() => { btn.innerHTML = `<i class="ph-bold ph-clock"></i>`; }, 3000);
-                }
-            }, 1000);
-        }
-
-        function updateProgress() {
-            const data = db[currentSplit].ex;
-            const done = data.filter(ex => localStorage.getItem(`done_${ex.id}`) === 'true').length;
-            const pct = (done / data.length) * 100;
-            document.getElementById('progress-bar').style.width = `${pct}%`;
-            
-            const fab = document.getElementById('finish-btn');
-            if(pct === 100) fab.classList.add('visible'); else fab.classList.remove('visible');
-        }
-
-        function finishSession() {
-            if(!confirm("Finalizar treino?")) return;
-            const hist = JSON.parse(localStorage.getItem('vf_hist') || '[]');
-            hist.unshift({ date: new Date().toISOString(), split: currentSplit, name: db[currentSplit].name });
-            localStorage.setItem('vf_hist', JSON.stringify(hist));
-            
-            db[currentSplit].ex.forEach(ex => localStorage.removeItem(`done_${ex.id}`));
-            document.getElementById('progress-bar').style.width = '0%';
-            document.getElementById('finish-btn').classList.remove('visible');
-            switchView('dashboard', document.querySelectorAll('.nav-item')[0]);
-        }
-
-        function renderHistory() {
-            const hist = JSON.parse(localStorage.getItem('vf_hist') || '[]');
-            const list = document.getElementById('full-history-list');
-            if(hist.length === 0) list.innerHTML = '<div style="text-align:center; color:#666;">Vazio</div>';
-            else {
-                list.innerHTML = hist.map(h => `
-                    <div style="background:#141414; padding:15px; border-radius:12px; margin-bottom:10px; border:1px solid #222; display:flex; justify-content:space-between;">
-                        <div><div style="color:#fff; font-weight:700;">${h.name}</div><div style="font-size:0.8rem; color:#666;">${new Date(h.date).toLocaleDateString()}</div></div>
-                        <div style="color:#888; font-size:0.8rem;">${h.split}</div>
-                    </div>
-                `).join('');
-            }
-        }
-
-        function resetApp() { if(confirm("Apagar tudo?")) { localStorage.clear(); location.reload(); } }
-
-        init();
-    </script>
-</body>
-</html>
